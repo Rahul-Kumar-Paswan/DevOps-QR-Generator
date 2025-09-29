@@ -170,3 +170,4 @@ Understand Terraform for infra provisioning and Jenkins for automation.
 ## 📝 License
 
 MIT License © 2025 Rahul Paswan
+This project is licensed under the [MIT License](./LICENSE).
