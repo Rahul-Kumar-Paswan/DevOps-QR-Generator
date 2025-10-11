@@ -66,7 +66,6 @@ To store the generated QR codes, you will need to set up an **S3 Bucket**. Follo
        }
      ]
    }
-  ```
 
 ## Running locally
 
