@@ -78,7 +78,7 @@ Follow these steps to set up your AWS S3 bucket:
        }
      ]
    }
-  ```
+
 ---
 
 ## 🏃‍♂️ Running Locally on Kubernetes (Minikube)
