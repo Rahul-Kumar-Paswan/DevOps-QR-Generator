@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  backend:
+    build: ./QR-Generator/backend-api
+    container_name: qr-generator-backend
+    image: qr-generator-backend:v1.0  
+    ports:
+      - "8001:80"
+    env_file:
+      - ./QR-Generator/backend-api/.env
+
+  frontend:
+    build: ./QR-Generator/front-end-nextjs
+    container_name: qr-generator-frontend
+    image: qr-generator-frontend:v1.0  
+    ports:
+      - "4000:3000"
+    environment:
+      - BACKEND_URL=http://backend:80  
+    depends_on:
+      - backend
