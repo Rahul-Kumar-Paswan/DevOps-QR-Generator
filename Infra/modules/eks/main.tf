@@ -104,7 +104,7 @@ resource "aws_eks_node_group" "node_group" {
 resource "aws_security_group" "eks_node_sg" {
   name        = "${var.cluster_name}-node-sg"
   description = "Security group for EKS worker nodes"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = var.vpc_id
 
   ingress {
     description = "Allow all internal traffic"

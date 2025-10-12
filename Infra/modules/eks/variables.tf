@@ -3,7 +3,7 @@ variable "tags" {
   type        = map(string)
   description = "Tags to apply to resources"
 }
-
+variable "vpc_id" {}
 variable "cluster_name" {}
 variable "cluster_version" {}
 
