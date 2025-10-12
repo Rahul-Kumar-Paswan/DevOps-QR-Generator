@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qr-generator-backend
+  namespace: prod
+  labels:
+    app: qr-generator-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qr-generator-backend
+  template:
+    metadata:
+      labels:
+        app: qr-generator-backend
+    spec:
+      # serviceAccountName: your-service-account-name  # Optional if using service account
+      containers:
+        - name: qr-generator-backend
+          image: rahulkumarpaswan/qr-generator-backend:v1.6
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
+          env:
+            - name: AWS_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_ACCESS_KEY
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_SECRET_KEY
+            - name: AWS_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: qr-generator-config
+                  key: AWS_BUCKET_NAME
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "aws-secrets"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qr-generator-backend-service
+  namespace: prod
+spec:
+  selector:
+    app: qr-generator-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
