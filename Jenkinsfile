@@ -134,27 +134,17 @@ pipeline {
                             ).trim()
                             echo "Using IAM Policy ARN: ${policyArn}"
 
-                            // 4. Check if ServiceAccount exists
-                            def saExists = sh(
-                                script: "kubectl get sa ${SERVICE_ACCOUNT} --ignore-not-found",
-                                returnStatus: true
-                            ) == 0
-
-                            if (!saExists) {
-                                echo "Creating IRSA ServiceAccount: ${SERVICE_ACCOUNT}"
-                                sh """
-                                    eksctl create iamserviceaccount \
-                                        --name ${SERVICE_ACCOUNT} \
-                                        --cluster ${K8S_CLUSTER_NAME} \
-                                        --region ${AWS_REGION} \
-                                        --attach-policy-arn ${policyArn} \
-                                        --approve \
-                                        --override-existing-serviceaccounts
-                                """
-                            } else {
-                                echo "ServiceAccount ${SERVICE_ACCOUNT} already exists. Skipping creation."
-                            }
-
+                            // Step 4. Create and validate IRSA ServiceAccount
+                            echo "Creating IRSA ServiceAccount '${SERVICE_ACCOUNT}'..."
+                            sh """
+                                eksctl create iamserviceaccount \
+                                    --name ${SERVICE_ACCOUNT} \
+                                    --cluster ${K8S_CLUSTER_NAME} \
+                                    --region ${AWS_REGION} \
+                                    --attach-policy-arn ${policyArn} \
+                                    --approve \
+                                    --override-existing-serviceaccounts
+                            """
                             // 5. Apply K8s resources
                             sh """
                                 export BACKEND_IMAGE=${BACKEND_IMAGE}
@@ -175,18 +165,21 @@ pipeline {
             when { expression { params.ACTION == 'create' } }
             steps {
                 dir('./K8S-ISRA/') {
-                    script {
-                        sh """
-                            echo 'Checking pods status...'
-                            kubectl get pods -o wide
-                            echo 'Checking services status...'
-                            kubectl get svc -o wide
-                            echo 'Waiting for backend pods to be ready...'
-                            kubectl wait --for=condition=ready pod -l app=backend --timeout=120s
-                            echo 'Waiting for frontend pods to be ready...'
-                            kubectl wait --for=condition=ready pod -l app=frontend --timeout=120s
-                            echo 'Deployment verified successfully!'
-                        """
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']]) {
+                        script {
+                            sh """
+                                echo 'Checking pods status...'
+                                kubectl get pods -o wide
+                                echo 'Checking services status...'
+                                kubectl get svc -o wide
+                                echo 'Waiting for backend pods to be ready...'
+                                echo 'Waiting for backend pods to be ready...'
+                                kubectl wait --for=condition=ready pod -l app=qr-generator-backend --timeout=120s
+                                echo 'Waiting for frontend pods to be ready...'
+                                kubectl wait --for=condition=ready pod -l app=qr-generator-frontend --timeout=120s
+                                echo 'Deployment verified successfully!'
+                            """
+                        }
                     }
                 }
             }
