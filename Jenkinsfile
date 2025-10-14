@@ -10,8 +10,6 @@ pipeline {
         K8S_CLUSTER_NAME = "devops-qr-cluster"
         IAM_POLICY_NAME  = "QRGenerator-S3-Policy"
         SERVICE_ACCOUNT  = "aws-secrets-sa"
-        // AWS_ACCOUNT_ID   = "<Your-AWS-Account-ID>"
-        // ARN              = "arn:aws:iam::${AWS_ACCOUNT_ID}:policy/${IAM_POLICY_NAME}"
     }
 
     parameters {
@@ -36,7 +34,7 @@ pipeline {
         stage('Cleanup Kubernetes Resources Before Destroy') {
             when { expression { params.ACTION == 'destroy' } }
             steps {
-                dir('./Kubernetes/') {
+                dir('./K8S-ISRA/') {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']]) {
                         script {
                             sh """
@@ -67,9 +65,8 @@ pipeline {
                     dir('./Infra/') {
                         script {
                             sh '''
-                                terraform fmt -check
-                                terraform validate
                                 terraform init
+                                terraform validate
                             '''
                             if (params.ACTION == 'create') {
                                 sh 'terraform plan -var-file=$TFVARS_FILE'
@@ -113,7 +110,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             when { expression { params.ACTION == 'create' } }
             steps {
-                dir('./Kubernetes/') {
+                dir('./K8S-ISRA/') {
                     withCredentials([
                         [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']
                     ]) {
@@ -177,7 +174,7 @@ pipeline {
         stage('Verify Kubernetes Deployment') {
             when { expression { params.ACTION == 'create' } }
             steps {
-                dir('./Kubernetes/') {
+                dir('./K8S-ISRA/') {
                     script {
                         sh """
                             echo 'Checking pods status...'

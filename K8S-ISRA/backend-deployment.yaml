@@ -18,7 +18,7 @@ spec:
       serviceAccountName: aws-secrets-sa
       containers:
         - name: qr-generator-backend
-          image: rahulkumarpaswan/qr-generator-backend:v1.6
+          image: ${BACKEND_IMAGE}
           ports:
             - containerPort: 80
           env:

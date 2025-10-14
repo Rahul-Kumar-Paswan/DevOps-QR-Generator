@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: qr-generator-frontend
-          image: rahulkumarpaswan/qr-generator-frontend:v1.0
+          image: ${FRONTEND_IMAGE}
           ports:
             - containerPort: 3000
           envFrom:
