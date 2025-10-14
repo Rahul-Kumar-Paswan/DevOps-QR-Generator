@@ -11,6 +11,8 @@ resource "aws_iam_role" "eks_cluster_role" {
       }
     }]
   })
+
+  tags = merge(var.tags, { Name = "${var.cluster_name}-eks-cluster-role" })
 }
 
 resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
@@ -27,6 +29,11 @@ resource "aws_eks_cluster" "cluster" {
   }
 
   depends_on = [aws_iam_role_policy_attachment.eks_cluster_policy]
+
+  tags = merge(var.tags, {
+    Name        = var.cluster_name
+    Environment = var.environment
+  })
 }
 
 resource "aws_iam_role" "node_role" {
@@ -42,6 +49,8 @@ resource "aws_iam_role" "node_role" {
       Action = "sts:AssumeRole"
     }]
   })
+
+  tags = merge(var.tags, { Name = "${var.cluster_name}-node-role" })
 }
 
 resource "aws_iam_role_policy_attachment" "node_policy" {
@@ -78,4 +87,10 @@ resource "aws_eks_node_group" "node_group" {
     aws_iam_role_policy_attachment.registry_policy,
     aws_eks_cluster.cluster
   ]
+
+  tags = merge(var.tags, {
+    Name        = "${var.cluster_name}-node-group"
+    Environment = var.environment
+  })
+
 }

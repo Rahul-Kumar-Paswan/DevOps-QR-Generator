@@ -33,6 +33,30 @@ pipeline {
             }
         }
 
+        stage('Cleanup Kubernetes Resources Before Destroy') {
+            when { expression { params.ACTION == 'destroy' } }
+            steps {
+                dir('./Kubernetes/') {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']]) {
+                        script {
+                            sh """
+                                aws eks --region ${AWS_REGION} update-kubeconfig --name ${K8S_CLUSTER_NAME}
+                                echo "Deleting Kubernetes services and deployments to cleanup load balancers and related SGs..."
+                                kubectl delete -f backend-deployment.yaml || true
+                                kubectl delete -f frontend-deployment.yaml || true
+                                kubectl delete -f configmap.yaml || true
+                                kubectl delete svc --all || true
+                                kubectl delete serviceaccount ${SERVICE_ACCOUNT} || true
+                                # Wait a bit to allow AWS to cleanup load balancers and security groups
+                                echo "Waiting 90 seconds for AWS to cleanup resources..."
+                                sleep 90
+                            """
+                        }
+                    }
+                }
+            }
+        }
+
         // Terraform Infrastructure
         stage('Terraform Init & Apply/Destroy') {
             steps {
