@@ -1,13 +1,14 @@
-variable "region" {}
 variable "environment" {}
+variable "Name" {}
 variable "tags" {
   type        = map(string)
-  description = "Tags to apply to resources"
+  default     = {}
 }
 
-variable "Name" {}
 variable "vpc_cidr" {}
-variable "public_subnet_cidr" {}
-variable "private_subnet_cidr" {}
-variable "public_subnet_az" {}
-variable "private_subnet_az" {}
+variable "public_subnet_cidrs" {
+  type = list(string)
+}
+variable "public_subnet_azs" {
+  type = list(string)
+}

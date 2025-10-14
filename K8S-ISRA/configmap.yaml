@@ -2,8 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: qr-generator-config
-  namespace: prod
+  # namespace: prod
 data:
   BACKEND_URL: "http://qr-generator-backend-service"
   AWS_BUCKET_NAME: "rahulverse-devops-qr-codes"
-
