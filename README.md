@@ -1,55 +1,24 @@
-# 🚀 DevOps QR Code Generator - EKS, IRSA, Jenkins, Docker, Kubernetes, Terraform
+# 🚀 DevOps QR Code Generator – EKS | Terraform | Jenkins | IRSA
 
-A full-fledged **DevOps project** demonstrating deployment of a containerized QR Code Generator application on **Amazon EKS** with secure S3 access via **IRSA**, full infrastructure provisioning using **Terraform**, and a complete **CI/CD pipeline with Jenkins**.
+![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-EKS-brightgreen?logo=kubernetes&logoColor=white)
+![Terraform](https://img.shields.io/badge/Terraform-IaC-7B42BC?logo=terraform)
+![CI/CD](https://img.shields.io/badge/Jenkins-CI%2FCD-orange?logo=jenkins)
+![License](https://img.shields.io/badge/License-MIT-yellow)
 
----
-
-## 📌 Summary
-
-- **Frontend**: Next.js UI to generate QR codes
-- **Backend**: FastAPI to handle QR logic and upload to S3
-- **Cloud Storage**: AWS S3 (accessed securely via IRSA)
-- **Infrastructure**: Terraform modules for VPC + EKS
-- **CI/CD**: Jenkins pipeline running on EC2
-- **Deployment**: Kubernetes with IRSA-based service accounts
+A production-grade **DevOps project** that deploys a full-stack QR Code Generator on **Amazon EKS**, using **IRSA for secure S3 integration**, fully modular **Terraform infrastructure**, and a robust **CI/CD pipeline via Jenkins**.
 
 ---
 
-## 🧭 Table of Contents
+## 🖥️ Project Overview
 
-- [📦 Project Overview](#-project-overview)
-- [🧱 Architecture / Workflow](#-architecture--workflow)
-- [✨ Features](#-features)
-- [🧰 Tech Stack](#-tech-stack)
-- [🌐 Live Demo](#-live-demo)
-- [🧰 Getting Started](#-getting-started)
-- [🛠️ Local Development](#️-local-development)
-- [🐳 Docker Setup](#-docker-setup-dev--prod)
-- [🐳 Docker Compose (Optional)](#-docker-compose-optional)
-- [🏗️ Infrastructure as Code (Terraform)](#️-infrastructure-as-code-terraform)
-- [⚡ Jenkins CI/CD Pipeline](#-jenkins-cicd-pipeline)
-- [☸️ Kubernetes Deployment](#️-kubernetes-deployment)
-- [📝 Environment Variables](#-environment-variables)
-- [📸 Screenshots](#-screenshots)
-- [📚 Learning / Takeaways](#-learning--takeaways)
-- [🧹 Cleanup](#-cleanup)
-- [📝 License](#-license)
+This project demonstrates a real-world DevOps pipeline:
 
----
-
-## 📦 Project Overview
-
-This application allows users to generate QR codes from input URLs. The backend uses FastAPI to generate the QR code, and stores the image in an AWS S3 bucket. The frontend fetches and displays the generated QR code.
-
-DevOps-QR-Generator/
-├── Infra/ # Terraform code for VPC + EKS
-├── QR-Generator/ # Frontend & Backend source code
-├── K8S-ISRA/ # Kubernetes manifests with IRSA
-├── Jenkinsfile # CI/CD pipeline definition
-├── server-setup.sh # Jenkins EC2 provisioning script
-├── screenshots/ # Output screenshots
-└── README.md
-
+- ✅ **Frontend**: Next.js app for user interaction  
+- ✅ **Backend**: FastAPI service to generate and upload QR codes to **AWS S3**  
+- ✅ **Infrastructure**: Provisioned using modular **Terraform**  
+- ✅ **Kubernetes**: Deployed on **Amazon EKS**, using **IRSA** for IAM role binding  
+- ✅ **CI/CD**: Automated with Jenkins pipeline hosted on EC2  
 
 ---
 
@@ -65,171 +34,162 @@ Frontend (Next.js)
 Backend (FastAPI) ──(IRSA)──▶ IAM Role
         │                     │
         └──▶ AWS S3
+```
+![alt text](./screenshots/architecture-diagram.png)
+---
 
-✨ Features
+## 🧭 Table of Contents
 
-✅ Secure QR code generation and public S3 hosting
+- [🖥️ Project Overview](#-project-overview)
+- [🧱 Architecture / Workflow](#-architecture--workflow)
+- [✨ Features](#-features)
+- [🧰 Tech Stack](#-tech-stack)
+- [⚙️ Prerequisites](#-prerequisites)
+- [📂 Project Structure](#-project-structure)
+- [🖥️ Jenkins EC2 Setup](#-jenkins-ec2-setup)
+- [🛠️ Local Development](#-local-development)
+- [🐳 Docker Setup](#-docker-setup)
+- [🏗️ Infrastructure as Code (Terraform)](#-infrastructure-as-code-terraform)
+- [☸️ Kubernetes Deployment (IRSA)](#-kubernetes-deployment-eks--irsa)
+- [⚡ Jenkins CI/CD Pipeline](#-jenkins-cicd-pipeline)
+- [📝 Environment Variables](#-environment-variables)
+- [📸 Screenshots / Demo](#-screenshots--demo)
+- [📚 Learning / Takeaways](#-learning--takeaways)
+- [🧹 Cleanup](#-cleanup)
+- [📌 TODO / Future Enhancements](#-todo--future-enhancements)
+- [🤝 Contributing](#-contributing)
+- [📝 License](#-license)
 
-✅ AWS IRSA for secure access (no hardcoded credentials)
+---
+## ✨ Features
 
-✅ Kubernetes-native deployment on EKS
+- ✅ Secure QR code generation & storage in public S3 bucket
+- ✅ Kubernetes-native deployment on Amazon EKS
+- ✅ IRSA-based IAM integration for secure AWS access
+- ✅ Modular Terraform infrastructure (VPC, EKS)
+- ✅ Full CI/CD with Jenkins
+- ✅ Dockerized microservices (frontend & backend)
+- ✅ Easy destroy and cleanup option built into pipeline
 
-✅ Full Terraform infra automation (modular)
+---
+## 🧰 Tech Stack
+| Layer    | Tools & Tech                                            |
+| -------- | ------------------------------------------------------- |
+| Frontend | Next.js, React                                          |
+| Backend  | FastAPI (Python)                                        |
+| DevOps   | Docker, Jenkins, Kubernetes, Terraform, AWS CLI, eksctl |
+| Cloud    | AWS EKS, S3, IAM, OIDC, IRSA                            |
+| CI/CD    | Jenkins on EC2, GitHub SCM                              |
+| IaC      | Terraform (Modular: VPC, EKS)                           |
+---
 
-✅ CI/CD pipeline via Jenkins on EC2
+## ⚙️ Prerequisites
+- ✅ Docker
+- ✅ AWS CLI v2
+- ✅ kubectl
+- ✅ eksctl
+- ✅ Terraform
+- ✅ Git
+- ✅ Jenkins (running on EC2 with Docker access)
 
-✅ Clean folder separation & microservice architecture
+---
+## 📂 Project Structure
+```bash
+DevOps-QR-Generator/
+├── Infra/                        # Terraform code
+│   ├── modules/                 # Modules for EKS and VPC
+│   ├── main.tf
+│   ├── output.tf
+│   └── terraform.tfvars
+├── QR-Generator/                # Application source code
+│   ├── backend-api/             # FastAPI backend
+│   └── front-end-nextjs/        # Next.js frontend
+├── K8S-ISRA/                    # Kubernetes + IRSA manifests
+│   ├── backend-deployment.yaml
+│   ├── configmap.yaml
+│   └── frontend-deployment.yaml
+├── Jenkinsfile                  # Jenkins pipeline
+├── server-setup.sh             # Jenkins EC2 bootstrap script
+├── screenshots/                # Project screenshots
+└── README.md
+```
+---
+## 🖥️ Jenkins EC2 Setup (CI/CD Host)
 
-🧰 Tech Stack
-Category	Technology
-Front-End	Next.js, React
-Back-End	Python, FastAPI
-Cloud	AWS EKS, S3, IAM
-DevOps Tools	Docker, Kubernetes
-IaC	Terraform, eksctl
-CI/CD	Jenkins
-🌐 Live Demo
+Provision a t2.small EC2 Ubuntu instance and run:
 
-Use the following to get service URL:
+```bash
+chmod +x server-setup.sh
+./server-setup.sh
+```
+This will install:
+- Jenkins
+- Docker (with permission for jenkins user)
+- AWS CLI
+- Terraform
+- kubectl
+- eksctl
+Reboot the EC2 instance after the setup completes to apply Docker group changes for the Jenkins user.
 
-kubectl get svc qr-generator-frontend-service
-
-
-If using Minikube:
-
-minikube service qr-generator-frontend-service --url
-
-🧰 Getting Started
-✅ Prerequisites
-
-Install:
-
-Docker
-
-AWS CLI v2
-
-kubectl
-
-eksctl
-
-Terraform
-
-Git
-
-🖥️ Jenkins EC2 Setup (CI/CD Host)
-
-Provision a t2.small EC2 Ubuntu and run:
-
-bash server-setup.sh
-
-
-✅ Installs:
-
-Jenkins
-
-Docker
-
-AWS CLI
-
-Terraform
-
-eksctl
-
-kubectl
-
-Reboot EC2 after setup to apply Docker group permissions to Jenkins user.
-
-🛠️ Local Development
-🔧 Frontend (Next.js)
+---
+## 🛠️ Local Development
+### 🔧 Frontend (Next.js)
+```bash
 cd QR-Generator/front-end-nextjs
 npm install
 npm run dev
-
-🧪 Backend (FastAPI)
+```
+### 🧪 Backend (FastAPI)
+```bash
 cd QR-Generator/backend-api
 pip install -r requirements.txt
 uvicorn main:app --reload
+```
+---
+## 🐳 Docker Setup (Dev + Prod)
+### 🐳 Build Backend Image
+```bash
+cd QR-Generator/backend-api/
+docker build -t <your-image-name> .
+```
 
-🐳 Docker Setup (Dev + Prod)
-Backend Dockerfile
-FROM python:3.9
-WORKDIR /app
-COPY . .
-RUN pip install -r requirements.txt
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+### 🐳 Build Frontend Image
+```bash
+cd QR-Generator/front-end-nextjs/
+docker build -t <your-image-name> .
+```
 
-Frontend Dockerfile
-FROM node:18-alpine
-WORKDIR /app
-COPY . .
-RUN npm install
-RUN npm run build
-CMD ["npm", "start"]
-
-🐳 Docker Compose (Optional)
+### 🐳 Docker Compose (Optional)
+```bash
 docker-compose up --build
+```
 
-🏗️ Infrastructure as Code (Terraform)
+---
+## 🏗️ Infrastructure as Code (Terraform)
 
 Terraform code in Infra/ is organized in modules.
 
 Usage
+```bash
 cd Infra/
 terraform init
 terraform apply -var-file=terraform.tfvars
-
+```
 
 Creates:
+- VPC
+- EKS Cluster
 
-VPC
+---
+## ☸️ Kubernetes Deployment (EKS + IRSA)
+### ✅ IRSA Setup
 
-EKS Cluster
-
-Worker Nodes
-
-⚡ Jenkins CI/CD Pipeline
-Jenkinsfile Stages
-
-Terraform Infra Setup
-
-Build & Push Docker Images
-
-Apply Kubernetes Manifests
-
-Wait for Pods Readiness
-
-Destroy (optional)
-
-Trigger Types
-
-Manual (parametrized)
-
-Auto (via Git webhook - TODO)
-
-☸️ Kubernetes Deployment
-
-Kubernetes manifests are in K8S-ISRA/:
-
-kubectl apply -f configmap.yaml
-kubectl apply -f backend-deployment.yaml
-kubectl apply -f frontend-deployment.yaml
-
-IRSA Setup
-
-Associate OIDC provider:
-IRSA Setup
-
-Associate OIDC provider:
-
+Associate IAM OIDC provider and create a service account with IAM policy using eksctl:
+```bash
 eksctl utils associate-iam-oidc-provider \
   --region ap-south-1 \
   --cluster devops-qr-cluster \
   --approve
-
-
-Create IAM policy (S3 access) and IAM Role.
-
-Create ServiceAccount:
 
 eksctl create iamserviceaccount \
   --name aws-secrets-sa \
@@ -237,56 +197,103 @@ eksctl create iamserviceaccount \
   --region ap-south-1 \
   --attach-policy-arn arn:aws:iam::<ACCOUNT_ID>:policy/QRGenerator-S3-Policy \
   --approve
+```
 
-📝 Environment Variables
+### ✅ Apply Kubernetes Manifests
+```bash
+kubectl apply -f K8S-ISRA/configmap.yaml
+kubectl apply -f K8S-ISRA/backend-deployment.yaml
+kubectl apply -f K8S-ISRA/frontend-deployment.yaml
+```
 
-Handled in configmap.yaml or inline in Kubernetes manifests.
+### 🔍 Verify
+```bash
+kubectl get pods
+kubectl get svc
+```
 
-Variable	Description
-S3_BUCKET	AWS S3 bucket name
-AWS_REGION	AWS Region
-BASE_URL	Public S3 base path for URLs
-📸 Screenshots
-UI	QR Output	Jenkins Logs
+---
+## ⚡ Jenkins CI/CD Pipeline
+### 🚀 Trigger
 
-	
-	
-📚 Learning / Takeaways
+🔘 Use Jenkins *"Build with Parameters"* to choose between provisioning (`create`) or cleanup (`destroy`) when triggering the pipeline.
 
-🔐 Mastered IRSA for secure AWS access from EKS
+### 📋 Jenkinsfile Breakdown
 
-⚙️ Used modular Terraform for clean infra provisioning
+| Stage                          | Description                                        |
+| ------------------------------ | -------------------------------------------------- |
+| Cleanup Workspace              | Clears Jenkins workspace                           |
+| Checkout Code                  | Pulls from GitHub main branch                      |
+| Terraform Init & Apply/Destroy | Provisions/destroys infra in AWS                   |
+| Build & Push Docker Images     | Builds and pushes backend & frontend Docker images |
+| Deploy to Kubernetes           | Applies config and deploys to EKS                  |
+| Verify Kubernetes Deployment   | Ensures pods and services are healthy              |
+| Cleanup (destroy only)         | Deletes K8s resources, waits for AWS cleanup       |
 
-☁️ Built and deployed microservices on EKS
+---
+## 📝 Environment Variables
 
-🔄 Created full CI/CD pipeline with Jenkins
+Handled via configmap.yaml or embedded into manifests using envsubst.
 
-🧩 Implemented clean separation of concerns (infra/app/cicd)
+| Variable   | Description                        |
+| ---------- | ---------------------------------- |
+| S3_BUCKET  | AWS S3 bucket for storing QR codes |
+| AWS_REGION | AWS region (e.g., ap-south-1)      |
+| BASE_URL   | S3 base path for images            |
 
-🧹 Cleanup
-Delete Kubernetes Resources
+---
+## 📸 Screenshots / Demo
+Access the UI using the frontend service's LoadBalancer IP.
+Below is a sample of the QR Generator UI deployed on EKS.
+![output](screenshots/image4.png)  
+_For more UI pages, check the [`/screenshots`](./screenshots) folder._
+
+---
+## 📚 Learning / Takeaways
+
+- 🔐 Mastered IRSA for secure AWS access from EKS
+- ⚙️ Used modular Terraform for clean infra provisioning
+- ☁️ Built and deployed microservices on EKS
+- 🔄 Created full CI/CD pipeline with Jenkins
+- 🧩 Implemented clean separation of concerns (infra/app/cicd)
+
+---
+## 🧹 Cleanup
+### 🧼 Delete Kubernetes Resources
+```bash
 kubectl delete -f backend-deployment.yaml
 kubectl delete -f frontend-deployment.yaml
 kubectl delete -f configmap.yaml
+```
 
-Delete IRSA IAM Role
+### 🔐 Delete IRSA IAM Role
+```bash
 eksctl delete iamserviceaccount \
   --name aws-secrets-sa \
   --cluster devops-qr-cluster \
   --region ap-south-1
+```
 
-📝 License
+---
+## 📌 TODO / Future Enhancements
+
+| Feature                                 | Status     |
+| --------------------------------------- | ---------- |
+| ✅ Secure IRSA Integration               | Completed  |
+| ✅ Jenkins-based CI/CD                   | Completed  |
+| ✅ Modular Terraform Infrastructure      | Completed  |
+| ⚙️ GitHub Webhooks for CI Trigger       | 🚧 Planned |
+| 📦 Helm Chart Support                   | 🚧 Planned |
+| 📈 Monitoring with Grafana + Prometheus | 🚧 Planned |
+| 🔄 Auto-scaling for backend pods        | 🚧 Planned |
+
+---
+## 🤝 Contributing
+Contributions, issues, and feature requests are welcome!  
+Feel free to fork this repo and submit a pull request.  
+
+---
+## 📝 License
 
 MIT License © 2025 Rahul Paswan
-
-Licensed under the MIT License
-
-📌 TODO / Future Enhancements
-
- Auto Jenkins trigger via GitHub webhook
-
- Add Helm chart support
-
- Integrate auto-scaling for backend
-
- Add Prometheus + Grafana monitoring
+This project is licensed under the [MIT License](./LICENSE).

@@ -27,7 +27,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'infra/cicd', credentialsId: 'git-token', url: 'https://github.com/Rahul-Kumar-Paswan/DevOps-QR-Generator.git'
+                git branch: 'main', credentialsId: 'git-token', url: 'https://github.com/Rahul-Kumar-Paswan/DevOps-QR-Generator.git'
             }
         }
 
