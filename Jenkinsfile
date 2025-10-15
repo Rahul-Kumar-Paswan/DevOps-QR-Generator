@@ -1,14 +1,6 @@
 pipeline {
     agent any
 
-    triggers {
-        githubPush()
-    }
-
-    environment {
-        ENV = "prod"
-    }
-
     stages {
         stage('Checkout') {
             steps {
@@ -17,9 +9,6 @@ pipeline {
         }
 
         stage('Deploy to Production') {
-            when {
-                branch 'main'
-            }
             steps {
                 echo "Deploying to PRODUCTION from main branch..."
             }
