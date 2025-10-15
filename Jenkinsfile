@@ -10,15 +10,15 @@ pipeline {
 
         stage('Testing') {
             steps {
-		echo "Testing..."
-            }
-        }
-	stage('Deploy to Production') {
-            steps {
                 echo "Deploying to PRODUCTION from main branch........"
             }
-        }	
-    }
+        }
+        stage('Deploy to Production') {
+                  steps {
+                      echo "Deploying to PRODUCTION from main branch........"
+                  }
+              }	
+          }
 
     post {
         success {
