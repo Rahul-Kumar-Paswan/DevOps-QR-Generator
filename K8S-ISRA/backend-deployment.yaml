@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qr-generator-backend
+  labels:
+    app: qr-generator-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qr-generator-backend
+  template:
+    metadata:
+      labels:
+        app: qr-generator-backend
+    spec:
+      serviceAccountName: aws-secrets-sa
+      containers:
+        - name: qr-generator-backend
+          image: ${BACKEND_IMAGE}
+          ports:
+            - containerPort: 80
+          env:
+            - name: AWS_BUCKET_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: qr-generator-config
+                  key: AWS_BUCKET_NAME
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qr-generator-backend-service
+spec:
+  selector:
+    app: qr-generator-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

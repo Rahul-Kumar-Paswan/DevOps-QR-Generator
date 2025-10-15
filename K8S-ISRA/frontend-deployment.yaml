@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qr-generator-frontend
+  labels:
+    app: qr-generator-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qr-generator-frontend
+  template:
+    metadata:
+      labels:
+        app: qr-generator-frontend
+    spec:
+      containers:
+        - name: qr-generator-frontend
+          image: ${FRONTEND_IMAGE}
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: qr-generator-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qr-generator-frontend-service
+spec:
+  selector:
+    app: qr-generator-frontend
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 30081
