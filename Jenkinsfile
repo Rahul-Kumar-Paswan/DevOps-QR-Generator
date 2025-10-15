@@ -10,7 +10,7 @@ pipeline {
 
         stage('Testing') {
             steps {
-                echo "Deploying to PRODUCTION from main branch........"
+                echo "Testing........"
             }
         }
         stage('Deploy to Production') {
