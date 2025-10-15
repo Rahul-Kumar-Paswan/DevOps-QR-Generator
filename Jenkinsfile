@@ -13,11 +13,16 @@ pipeline {
                 echo "Testing........"
             }
         }
-	stage('Build') {
-            steps {
-                echo "Building........"
-            }
+		stage('Build') {
+			steps {
+	            echo "Building........"
+	        }
         }	
+		stage('Checking') {
+			steps {
+	            echo "checking........"
+	        }
+        }
         stage('Deploy to Production') {
                   steps {
                       echo "Deploying to PRODUCTION from main branch........"
