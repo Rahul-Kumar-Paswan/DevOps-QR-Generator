@@ -8,12 +8,16 @@ pipeline {
             }
         }
 
-        stage('Deploy to Production') {
+        stage('Testing') {
             steps {
-                echo "Deploying to PRODUCTION from main branch........"
 		echo "Testing..."
             }
         }
+	stage('Deploy to Production') {
+            steps {
+                echo "Deploying to PRODUCTION from main branch........"
+            }
+        }	
     }
 
     post {
