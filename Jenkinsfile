@@ -34,7 +34,7 @@ pipeline {
         stage('Cleanup Kubernetes Resources Before Destroy') {
             when { expression { params.ACTION == 'destroy' } }
             steps {
-                dir('./K8S-ISRA/') {
+                dir('./K8S-IRSA/') {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']]) {
                         script {
                             sh """
@@ -110,7 +110,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             when { expression { params.ACTION == 'create' } }
             steps {
-                dir('./K8S-ISRA/') {
+                dir('./K8S-IRSA/') {
                     withCredentials([
                         [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']
                     ]) {
@@ -164,7 +164,7 @@ pipeline {
         stage('Verify Kubernetes Deployment') {
             when { expression { params.ACTION == 'create' } }
             steps {
-                dir('./K8S-ISRA/') {
+                dir('./K8S-IRSA/') {
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-cred']]) {
                         script {
                             sh """
