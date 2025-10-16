@@ -104,7 +104,7 @@ DevOps-QR-Generator/
 ├── QR-Generator/                # Application source code
 │   ├── backend-api/             # FastAPI backend
 │   └── front-end-nextjs/        # Next.js frontend
-├── K8S-ISRA/                    # Kubernetes + IRSA manifests
+├── K8S-IRSA/                    # Kubernetes + IRSA manifests
 │   ├── backend-deployment.yaml
 │   ├── configmap.yaml
 │   └── frontend-deployment.yaml
@@ -201,9 +201,9 @@ eksctl create iamserviceaccount \
 
 ### ✅ Apply Kubernetes Manifests
 ```bash
-kubectl apply -f K8S-ISRA/configmap.yaml
-kubectl apply -f K8S-ISRA/backend-deployment.yaml
-kubectl apply -f K8S-ISRA/frontend-deployment.yaml
+kubectl apply -f K8S-IRSA/configmap.yaml
+kubectl apply -f K8S-IRSA/backend-deployment.yaml
+kubectl apply -f K8S-IRSA/frontend-deployment.yaml
 ```
 
 ### 🔍 Verify
